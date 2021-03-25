@@ -20,6 +20,8 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+
+
     public void navigation(){
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
