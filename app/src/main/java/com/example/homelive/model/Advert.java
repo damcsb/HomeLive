@@ -2,7 +2,7 @@ package com.example.homelive.model;
 
 import android.net.Uri;
 
-public class advert {
+public class Advert {
 
     String uid;
     String tittle;
