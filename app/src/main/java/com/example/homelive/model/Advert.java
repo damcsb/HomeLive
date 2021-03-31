@@ -2,15 +2,18 @@ package com.example.homelive.model;
 
 import android.net.Uri;
 
+import java.util.Date;
+
 public class Advert {
 
     String uid;
     String tittle;
     String description;
     String city;
-    String price;
+    Integer price;
     String email;
     Uri image;
+    String date;
 
     public String getUid() {
         return uid;
@@ -44,11 +47,11 @@ public class Advert {
         this.city = city;
     }
 
-    public String getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
@@ -66,5 +69,13 @@ public class Advert {
 
     public void setImage(Uri image) {
         this.image = image;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 }
