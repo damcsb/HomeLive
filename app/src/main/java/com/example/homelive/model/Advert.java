@@ -13,7 +13,26 @@ public class Advert {
     Integer price;
     String email;
     Uri image;
+    String userpic;
     String date;
+    Integer phone;
+
+
+    public String getUserpic() {
+        return userpic;
+    }
+
+    public void setUserpic(String userpic) {
+        this.userpic = userpic;
+    }
+
+    public Integer getPhone() {
+        return phone;
+    }
+
+    public void setPhone(Integer phone) {
+        this.phone = phone;
+    }
 
     public String getUid() {
         return uid;
