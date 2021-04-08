@@ -59,6 +59,12 @@ public class SettingsActivity extends AppCompatActivity {
                     DatabaseAdvert.child(ad.getUid()).removeValue();
                     adverts.remove(ad);
                     adapter.notifyDataSetChanged();
+                    break;
+                    case OnAdvertClickListener.EDIT_AD :
+                        Intent intent = new Intent(SettingsActivity.this, AdvertActivity.class);
+                        intent.putExtra("adex", ad);
+                        setResult(RESULT_OK, intent);
+                        startActivity(intent);
                 }
             }
         });

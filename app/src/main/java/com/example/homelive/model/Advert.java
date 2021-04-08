@@ -2,9 +2,10 @@ package com.example.homelive.model;
 
 import android.net.Uri;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Advert {
+public class Advert implements Serializable {
 
     String uid;
     String tittle;
