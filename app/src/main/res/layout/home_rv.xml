@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#00FFFFFF">
@@ -151,13 +152,15 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/hv_contact"
+                    <ImageButton
+                        android:id="@+id/hv_info"
+                        style="@android:style/Widget.Material.ImageButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Contact"
-                        app:backgroundTint="#00BCD4"
-                        app:icon="@drawable/ic_chat" />
+                        android:background="#00FFFFFF"
+                        android:src="@drawable/ic_info"
+                        android:tint="#00BCD4"
+                        tools:targetApi="lollipop" />
                 </LinearLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
         </LinearLayout>

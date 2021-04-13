@@ -79,7 +79,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 adverts.clear();
                 for(DataSnapshot ds:snapshot.getChildren()){
-                    Advert ad = ds.getValue(Advert.class);
+                        Advert ad = ds.getValue(Advert.class);
                     adverts.add(ad);
                 }
                 adapter.notifyDataSetChanged();

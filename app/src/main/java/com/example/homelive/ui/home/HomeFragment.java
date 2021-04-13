@@ -1,5 +1,6 @@
 package com.example.homelive.ui.home;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,10 +15,14 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homelive.AdvertActivity;
 import com.example.homelive.HomeActivity;
+import com.example.homelive.InfoActivity;
 import com.example.homelive.R;
+import com.example.homelive.SettingsActivity;
 import com.example.homelive.model.Advert;
 import com.example.homelive.recycler.AdapterAdvert;
+import com.example.homelive.recycler.OnAdvertClickInfo;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -27,6 +32,8 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
 
@@ -51,7 +58,15 @@ public class HomeFragment extends Fragment {
         advertList = new ArrayList<>();
         showdata();
 
-        Adapter = new AdapterAdvert(advertList);
+        Adapter = new AdapterAdvert(advertList, new OnAdvertClickInfo() {
+            @Override
+            public void onClick(Advert ad) {
+                Intent intent = new Intent(getActivity(), InfoActivity.class);
+                intent.putExtra("adinf", ad);
+                getActivity().setResult(RESULT_OK, intent);
+                startActivity(intent);
+            }
+        });
         recycler.setAdapter(Adapter);
 
         return root;

@@ -1,30 +1,45 @@
 package com.example.homelive.recycler;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.homelive.AdvertActivity;
+import com.example.homelive.HomeActivity;
 import com.example.homelive.R;
+import com.example.homelive.SettingsActivity;
 import com.example.homelive.model.Advert;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
+import static android.app.Activity.RESULT_OK;
+
 public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterViewHolder> {
 
     List<Advert> adverts;
+    private OnAdvertClickInfo listener;
+    private FirebaseStorage mStorage;
+    private StorageReference storageReference;
 
-    public AdapterAdvert(List<Advert> adverts) {
+    public AdapterAdvert(List<Advert> adverts, OnAdvertClickInfo listener) {
         this.adverts = adverts;
+        this.listener = listener;
     }
 
     @NonNull
@@ -50,7 +65,7 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
         ImageView picture;
         CircleImageView userpic;
         TextView email, phone, title, description, price, city;
-        MaterialButton chat;
+        ImageButton info;
 
 
         public AdapterViewHolder(@NonNull View itemView) {
@@ -63,7 +78,7 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
             description = itemView.findViewById(R.id.hv_desc);
             price = itemView.findViewById(R.id.hv_price);
             city = itemView.findViewById(R.id.hv_city);
-            chat = itemView.findViewById(R.id.hv_contact);
+            info = itemView.findViewById(R.id.hv_info);
         }
 
         public void bind(Advert item){
@@ -75,6 +90,22 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
            city.setText(item.getCity());
            Uri authorpic = Uri.parse(item.getUserpic());
            Picasso.get().load(authorpic).into(userpic);
+           mStorage = FirebaseStorage.getInstance();
+           storageReference = mStorage.getReference();
+           storageReference.child("Adverts").child(item.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                @Override
+                public void onSuccess(Uri uri) {
+                    Picasso.get().load(uri).into(picture);
+                }
+            });
+
+           info.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View view) {
+                   listener.onClick(item);
+               }
+           });
         }
+
     }
 }
