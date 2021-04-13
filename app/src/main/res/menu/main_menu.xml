@@ -8,7 +8,7 @@
         android:icon="@drawable/ic_create"
         android:title="Create" />
 
-    <item android:id="@+id/Settings"
+    <item android:id="@+id/item_settings"
         android:icon="@drawable/ic_settings"
         android:title="Settings" />
 

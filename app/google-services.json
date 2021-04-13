@@ -1,33 +1,34 @@
 {
   "project_info": {
-    "project_number": "1043267117993",
-    "project_id": "homelive-ac8fc",
-    "storage_bucket": "homelive-ac8fc.appspot.com"
+    "project_number": "324023409545",
+    "firebase_url": "https://homelive-4c14b-default-rtdb.firebaseio.com",
+    "project_id": "homelive-4c14b",
+    "storage_bucket": "homelive-4c14b.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1043267117993:android:4311c625f946f881aa9ab8",
+        "mobilesdk_app_id": "1:324023409545:android:f815c7e158bd261830df58",
         "android_client_info": {
           "package_name": "com.example.homelive"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1043267117993-5e9ri14bc0orqjc285s78ge51aove3ug.apps.googleusercontent.com",
+          "client_id": "324023409545-qj44dsl219rs3lh423khmot9beudvnav.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBP7DUOpLqZ1p34uC9Dtq3bFQYxAT3Rx2k"
+          "current_key": "AIzaSyCY-asHNFdI1sKXWMJErIwXQ4SC747ZbF0"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1043267117993-5e9ri14bc0orqjc285s78ge51aove3ug.apps.googleusercontent.com",
+              "client_id": "324023409545-qj44dsl219rs3lh423khmot9beudvnav.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
