@@ -27,3 +27,20 @@ Página de información del anuncio y chat individual entre el vendedor y compra
 ![picture](https://i.imgur.com/sFuGqz3.png)</br>
 
 24/03/2021
+
+## Versión Preliminar
+
+Versión preliminar para el 14/05/2021
+
+Estas son actualmente las páginas de la aplicación
+
+[Imagenes](https://imgur.com/a/KXAwd44)
+
+Este es el video explicando lo que se ha hecho y lo que queda por hacer
+
+[Video explicativo](https://youtu.be/ZgFSiJqtW6k)
+
+Esta es la APK de la versión preliminar para el 14/05/2021
+
+[APK 14/05/2021](https://mega.nz/file/X5xWySQa#-uv6vfhGJwAWInbD2I07555fqhGUEaEKyCWWIAVr-wQ)
+
