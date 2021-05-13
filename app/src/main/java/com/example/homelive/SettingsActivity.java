@@ -11,16 +11,26 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 import com.example.homelive.model.Advert;
 import com.example.homelive.recycler.AdapterSettings;
 import com.example.homelive.recycler.OnAdvertClickListener;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.ListResult;
+import com.google.firebase.storage.StorageReference;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,9 +41,13 @@ public class SettingsActivity extends AppCompatActivity {
     private FirebaseDatabase fDatabase;
     private DatabaseReference DatabaseUser;
     private DatabaseReference DatabaseAdvert;
+    private FirebaseStorage mStorage;
+    private StorageReference storageReference;
     private AdapterSettings adapter;
     private RecyclerView recycler;
     private List<Advert> adverts;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +58,8 @@ public class SettingsActivity extends AppCompatActivity {
         fDatabase = FirebaseDatabase.getInstance();
         DatabaseUser = fDatabase.getReference("Users");
         DatabaseAdvert = fDatabase.getReference("Adverts");
+        mStorage = FirebaseStorage.getInstance();
+        storageReference = mStorage.getReference("Adverts");
 
         recycler = findViewById(R.id.rv_settings);
         recycler.setLayoutManager(new LinearLayoutManager(this));
@@ -57,6 +73,17 @@ public class SettingsActivity extends AppCompatActivity {
                     case OnAdvertClickListener.DEL_AD :
                     DatabaseUser.child(fbAuth.getUid()).child("Adverts").child(ad.getUid()).removeValue();
                     DatabaseAdvert.child(ad.getUid()).removeValue();
+                    StorageReference imagesReference = storageReference.child(ad.getUid());
+                    Task<ListResult> listResultTask = imagesReference.listAll();
+                    listResultTask.addOnCompleteListener(new OnCompleteListener<ListResult>() {
+                        @Override
+                        public void onComplete(@NonNull @NotNull Task<ListResult> task) {
+                            List<StorageReference> items = task.getResult().getItems();
+                            for(int i = 0; i < items.size(); i++){
+                                items.get(i).delete();
+                            }
+                        }
+                    });
                     adverts.remove(ad);
                     adapter.notifyDataSetChanged();
                     break;
@@ -69,7 +96,6 @@ public class SettingsActivity extends AppCompatActivity {
             }
         });
         recycler.setAdapter(adapter);
-
 
 
     }

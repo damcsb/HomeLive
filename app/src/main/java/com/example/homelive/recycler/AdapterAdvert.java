@@ -60,10 +60,11 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
         return adverts.size();
     }
 
+
     public class AdapterViewHolder extends RecyclerView.ViewHolder {
 
         ImageView picture;
-        CircleImageView userpic;
+        ImageView userpic;
         TextView email, phone, title, description, price, city;
         ImageButton info;
 
@@ -88,11 +89,15 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
            description.setText(item.getDescription());
            price.setText(String.valueOf(item.getPrice()) + "€");
            city.setText(item.getCity());
+
+
            Uri authorpic = Uri.parse(item.getUserpic());
            Picasso.get().load(authorpic).into(userpic);
+
            mStorage = FirebaseStorage.getInstance();
            storageReference = mStorage.getReference();
-           storageReference.child("Adverts").child(item.getUid()).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+
+            storageReference.child("Adverts").child(item.getUid()).child("0").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
                 public void onSuccess(Uri uri) {
                     Picasso.get().load(uri).into(picture);

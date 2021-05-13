@@ -22,7 +22,9 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.homelive.model.Advert;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
@@ -32,6 +34,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -61,8 +65,10 @@ public class AdvertActivity extends AppCompatActivity {
     private ImageButton car_right;
     private ImageButton car_left;
     private int carpos;
+    private String presentdate;
 
     private int PICK_IMAGE = 200;
+    private String urlauthor;
     private String urlimage;
     private Advert advertex;
 
@@ -74,100 +80,38 @@ public class AdvertActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_advert);
         getSupportActionBar().setTitle("Your advert");
-
-        //Firebase declarations
-        fbAuth = FirebaseAuth.getInstance();
-        fDatabase = FirebaseDatabase.getInstance();
-        DatabaseUser = fDatabase.getReference();
-        DatabaseAdvert = fDatabase.getReference();
-        mStorage = FirebaseStorage.getInstance();
-        storageReference = mStorage.getReference();
-
-        //View objects
-        edTitle = findViewById(R.id.ad_tittle);
-        edDesc = findViewById(R.id.ad_desc);
-        edprice = findViewById(R.id.ad_price);
-        edPhone = findViewById(R.id.ad_phone);
-        btn_save = findViewById(R.id.ad_save);
-        btn_cancel = findViewById(R.id.ad_cancel);
-        ctSpinner = findViewById(R.id.ad_spinner);
-        carousel = findViewById(R.id.ad_images);
-        car_left = findViewById(R.id.caro_left);
-        car_right = findViewById(R.id.caro_right);
-        carousel.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { pickImageInt(); }});
-
-        car_right.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(carpos < imagesUri.size()-1 ){
-                    carpos++;
-                    carousel.setImageURI(imagesUri.get(carpos));
-                }else{
-                    Toast.makeText(getApplicationContext(), "No more images...", Toast.LENGTH_LONG).show();
-                }
-
-            }
-        });
-
-        car_left.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(carpos > 0 ){
-                    carpos--;
-                    carousel.setImageURI(imagesUri.get(carpos));
-                }else{
-                    Toast.makeText(getApplicationContext(), "No previus image", Toast.LENGTH_LONG).show();
-                }
-            }
-        });
+        //Method declarations
+        declarations();
+        //Carousel start-up
         imagesUri = new ArrayList<>();
-        //Setup switcher
-        carousel.setFactory(new ViewSwitcher.ViewFactory() {
-            @Override
-            public View makeView() {
-                ImageView imageView = new ImageView(getApplicationContext());
-                return imageView;
-            }
-        });
+        carouselconstructor();
+        //Get Advert from intent to edit
+        comprobationadvert();
+        //Get user photo for advert
+        getuserphoto();
 
-        advertex = (Advert) getIntent().getSerializableExtra("adex");
-        if(advertex != null){
-            edTitle.setText(advertex.getTittle());
-            edDesc.setText(advertex.getDescription());
-            edPhone.setText(String.valueOf(advertex.getPhone()));
-            edprice.setText(String.valueOf(advertex.getPrice()));
-        }
 
-        //Take author advert photo
-        storageReference.child("Users Pictures").child(fbAuth.getUid()).child("Profile Pic").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-            @Override
-            public void onSuccess(Uri uri) {
-                urlimage = uri.toString();
-            }
-        });
-        //Get city of spinner
-        ctSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                ct_selected = ctSpinner.getAdapter().getItem(i).toString().trim();
-            }
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) { }});
+        getCityFromSpinner();
 
+        getDate();
+
+
+
+        edTitle.setText("Ejemplo");
+        edDesc.setText("ejemplo2");
+        edPhone.setText("65555");
+        edprice.setText("10000");
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //Take data
                 String title = edTitle.getText().toString().trim();
                 String desc = edDesc.getText().toString().trim();
                 String price = edprice.getText().toString().trim();
                 String Phone = edPhone.getText().toString().trim();
                 String uid = UUID.randomUUID().toString();
 
-                //Get date
 
-                SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
-                Date date = new Date();
-                String acdate = dateFormat.format(date);
 
                 if(title.isEmpty() || desc.isEmpty() || price.isEmpty() || Phone.isEmpty()){
                     Snackbar.make(view, "Complete the fields", Snackbar.LENGTH_LONG).show();
@@ -177,8 +121,8 @@ public class AdvertActivity extends AppCompatActivity {
                     return;
                 }
 
-                //create object
 
+                //create object
                 Advert ad = new Advert();
                 ad.setTittle(title);
                 ad.setDescription(desc);
@@ -187,16 +131,16 @@ public class AdvertActivity extends AppCompatActivity {
                 ad.setEmail(fbAuth.getCurrentUser().getEmail());
                 ad.setCity(ct_selected);
                 ad.setUid(uid);
-                ad.setDate(acdate);
-                ad.setUserpic(urlimage);
+                ad.setDate(presentdate);
+                ad.setUserpic(urlauthor);
                 for (int i=0; i<imagesUri.size(); i++){
                     storageReference.child("Adverts").child(ad.getUid()).child(String.valueOf(i)).putFile(imagesUri.get(i));
                 }
+
                 //Comprobation advert to edit
                 if(advertex == null){
                     DatabaseAdvert.child("Adverts").child(uid).setValue(ad);
                     DatabaseUser.child("Users").child(fbAuth.getUid()).child("Adverts").child(uid).setValue(ad);
-
                 }else if(advertex != null){
                     //Update Advert
                     Advert adup = advertex;
@@ -207,13 +151,13 @@ public class AdvertActivity extends AppCompatActivity {
                     adup.setPhone(Integer.valueOf(Phone));
                     adup.setEmail(fbAuth.getCurrentUser().getEmail());
                     adup.setCity(ct_selected);
-                    adup.setDate(acdate);
-                    adup.setUserpic(urlimage);
+                    adup.setDate(presentdate);
+                    adup.setUserpic(urlauthor);
+                    getadvertphoto(adup);
                     DatabaseAdvert.child("Adverts").child(adup.getUid()).setValue(adup);
                     DatabaseUser.child("Users").child(fbAuth.getUid()).child("Adverts").child(adup.getUid()).setValue(adup);
                 }
                 advertex = null;
-                cleanedit();
             }
         });
 
@@ -225,6 +169,98 @@ public class AdvertActivity extends AppCompatActivity {
                 finish();
             }
         });
+    }
+    //Get Today date
+    private void getDate(){
+        //Get date
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
+        Date date = new Date();
+        presentdate = dateFormat.format(date);
+    }
+    //Comprobation advert to edit
+    private void comprobationadvert(){
+        advertex = (Advert) getIntent().getSerializableExtra("adex");
+        if(advertex != null){
+            //Replace data
+            edTitle.setText(advertex.getTittle());
+            edDesc.setText(advertex.getDescription());
+            edPhone.setText(String.valueOf(advertex.getPhone()));
+            edprice.setText(String.valueOf(advertex.getPrice()));
+        }
+    }
+    //Get Author photo
+    private void getuserphoto(){
+        storageReference.child("Users Pictures").child(fbAuth.getUid()).child("Profile Pic").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                urlauthor = uri.toString();
+            }
+        });
+    }
+    private String getadvertphoto(Advert ad){
+        storageReference.child("Adverts").child(ad.getUid()).child("0").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+            @Override
+            public void onSuccess(Uri uri) {
+                urlimage = uri.toString();
+            }
+        });;
+        return urlimage;
+    }
+    //Get city of spinner
+    private void getCityFromSpinner(){
+
+        ctSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                ct_selected = ctSpinner.getAdapter().getItem(i).toString().trim();
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) { }});
+    }
+
+    private void carouselconstructor(){
+        //Carousel images
+        carousel.setOnClickListener(new View.OnClickListener() { @Override public void onClick(View view) { pickImageInt(); }});
+        //Carousel press right button
+        car_right.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(carpos < imagesUri.size()-1 ){
+                    //Position carousel +1
+                    carpos++;
+                    //Get image position
+                    carousel.setImageURI(imagesUri.get(carpos));
+                }else{
+                    //End images array message
+                    Toast.makeText(getApplicationContext(), "No more images...", Toast.LENGTH_LONG).show();
+                }
+
+            }
+        });
+        //Carousel press left button
+        car_left.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if(carpos > 0 ){
+                    //Position carousel -1
+                    carpos--;
+                    //Get image position
+                    carousel.setImageURI(imagesUri.get(carpos));
+                }else{
+                    //End images array message
+                    Toast.makeText(getApplicationContext(), "No previus image", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        //Setup switcher
+        carousel.setFactory(new ViewSwitcher.ViewFactory() {
+            @Override
+            public View makeView() {
+                ImageView imageView = new ImageView(getApplicationContext());
+                return imageView;
+            }
+        });
+
     }
 
     //Menu
@@ -303,5 +339,29 @@ public class AdvertActivity extends AppCompatActivity {
         intent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Images to Upload"), PICK_IMAGE);
+    }
+
+
+
+    private void declarations(){
+        //Firebase declarations
+        fbAuth = FirebaseAuth.getInstance();
+        fDatabase = FirebaseDatabase.getInstance();
+        DatabaseUser = fDatabase.getReference();
+        DatabaseAdvert = fDatabase.getReference();
+        mStorage = FirebaseStorage.getInstance();
+        storageReference = mStorage.getReference();
+
+        //View objects
+        edTitle = findViewById(R.id.ad_tittle);
+        edDesc = findViewById(R.id.ad_desc);
+        edprice = findViewById(R.id.ad_price);
+        edPhone = findViewById(R.id.ad_phone);
+        btn_save = findViewById(R.id.ad_save);
+        btn_cancel = findViewById(R.id.ad_cancel);
+        ctSpinner = findViewById(R.id.ad_spinner);
+        carousel = findViewById(R.id.ad_images);
+        car_left = findViewById(R.id.caro_left);
+        car_right = findViewById(R.id.caro_right);
     }
 }

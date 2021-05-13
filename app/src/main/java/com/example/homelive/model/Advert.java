@@ -13,7 +13,7 @@ public class Advert implements Serializable {
     String city;
     Integer price;
     String email;
-    Uri image;
+    String image;
     String userpic;
     String date;
     Integer phone;
@@ -83,11 +83,11 @@ public class Advert implements Serializable {
         this.email = email;
     }
 
-    public Uri getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(Uri image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
