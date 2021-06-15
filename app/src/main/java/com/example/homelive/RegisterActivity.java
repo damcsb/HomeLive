@@ -14,14 +14,21 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.example.homelive.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 
@@ -30,6 +37,7 @@ public class RegisterActivity extends AppCompatActivity {
     private FirebaseAuth fbAuth;
     private FirebaseStorage mStorage;
     private StorageReference storageReference;
+    private DatabaseReference databaseReference;
 
     private TextInputEditText editusername;
     private TextInputEditText editemail;
@@ -38,6 +46,7 @@ public class RegisterActivity extends AppCompatActivity {
     private ImageView userpic;
     private int PICK_IMAGE = 267;
     Uri imagePath;
+    private String urlphoto;
 
     private Button btn_register;
     private Button btn_login;
@@ -51,12 +60,13 @@ public class RegisterActivity extends AppCompatActivity {
         fbAuth = FirebaseAuth.getInstance();
         mStorage = FirebaseStorage.getInstance();
         storageReference = mStorage.getReference();
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         editusername = findViewById(R.id.reg_username);
         editemail = findViewById(R.id.reg_email);
         editpassword = findViewById(R.id.reg_pass);
         editpassword2 = findViewById(R.id.reg_pass2);
-        userpic = findViewById(R.id.reg_pic);
+        userpic = findViewById(R.id.log_pic);
 
         btn_login = findViewById(R.id.reg_login);
         btn_register = findViewById(R.id.reg_register);
@@ -84,12 +94,14 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
-                            Toast.makeText(RegisterActivity.this, "", Toast.LENGTH_SHORT).show();
-                            StorageReference imageReference = storageReference.child("Users Pictures").child(fbAuth.getUid()).child("Profile Pic");
-                            imageReference.putFile(imagePath);
-                            Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
-                            startActivity(intent);
-                            finish();
+                            getuserphoto();
+                            Toast.makeText(RegisterActivity.this, "Registered!", Toast.LENGTH_SHORT).show();
+                            User user = new User();
+                            user.setUid(fbAuth.getUid());
+                            user.setUsername(username);
+
+                            databaseReference.child("Users").child(fbAuth.getUid()).setValue(user);
+
                         }else{
                             Snackbar.make(view, "Register ERROR!", Snackbar.LENGTH_LONG).show();
                             return;
@@ -117,6 +129,27 @@ public class RegisterActivity extends AppCompatActivity {
                 startActivityForResult(Intent.createChooser(intent, "Select Image"), PICK_IMAGE);
             }
         });
+    }
+
+    private void getuserphoto(){
+        StorageReference imageReference = storageReference.child("Users Pictures").child(fbAuth.getUid()).child("Profile Pic");
+        imageReference.putFile(imagePath).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<UploadTask.TaskSnapshot> task) {
+                task.getResult().getMetadata().getReference().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                    @Override
+                    public void onSuccess(Uri uri) {
+                        urlphoto = uri.toString();
+                        databaseReference.child("Users").child(fbAuth.getUid()).child("picture").setValue(urlphoto);
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        Toast.makeText(RegisterActivity.this, "Registered!", Toast.LENGTH_LONG).show();
+                        startActivity(intent);
+                        finish();
+                    }
+                });
+            }
+        });
+
     }
 
     @Override

@@ -143,7 +143,10 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.item_chat:
-
+                Intent convers = new Intent(SettingsActivity.this, HomeActivity.class);
+                startActivity(convers);
+                finish();
+                break;
             case R.id.item_logout :
                 fbAuth.signOut();
                 Intent intent = new Intent(SettingsActivity.this, LoginActivity.class);
@@ -155,5 +158,9 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() { }
+    public void onBackPressed() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 }

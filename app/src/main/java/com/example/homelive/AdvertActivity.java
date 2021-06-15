@@ -29,10 +29,14 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.toptoche.searchablespinnerlibrary.SearchableSpinner;
 
 import org.jetbrains.annotations.NotNull;
@@ -71,8 +75,10 @@ public class AdvertActivity extends AppCompatActivity {
     private String urlauthor;
     private String urlimage;
     private Advert advertex;
+    private String usern;
 
     private ArrayList<Uri> imagesUri;
+    private String linkimg;
 
 
     @Override
@@ -94,7 +100,7 @@ public class AdvertActivity extends AppCompatActivity {
         getCityFromSpinner();
 
         getDate();
-
+        getusername();
 
 
         edTitle.setText("Ejemplo");
@@ -133,8 +139,19 @@ public class AdvertActivity extends AppCompatActivity {
                 ad.setUid(uid);
                 ad.setDate(presentdate);
                 ad.setUserpic(urlauthor);
+                ad.setUserid(fbAuth.getUid());
+
+                ad.setUsername(usern);
                 for (int i=0; i<imagesUri.size(); i++){
                     storageReference.child("Adverts").child(ad.getUid()).child(String.valueOf(i)).putFile(imagesUri.get(i));
+                    storageReference.child("Adverts").child(ad.getUid()).child(String.valueOf(i)).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            linkimg = uri.toString();
+                        }
+                    });
+                    databaseReference.child("Uploads").child(ad.getUid()).setValue(linkimg);
+
                 }
 
                 //Comprobation advert to edit
@@ -176,6 +193,21 @@ public class AdvertActivity extends AppCompatActivity {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         Date date = new Date();
         presentdate = dateFormat.format(date);
+    }
+    //Get username
+    private void getusername(){
+        databaseReference.child("Users").child(fbAuth.getUid()).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                usern = snapshot.child("username").getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
     }
     //Comprobation advert to edit
     private void comprobationadvert(){
@@ -284,7 +316,10 @@ public class AdvertActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.item_chat:
-
+                Intent conver = new Intent(AdvertActivity.this, ConversActivity.class);
+                startActivity(conver);
+                finish();
+                break;
             case R.id.item_logout :
                 fbAuth.signOut();
                 Intent intent = new Intent(AdvertActivity.this, LoginActivity.class);
@@ -324,7 +359,11 @@ public class AdvertActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() { }
+    public void onBackPressed() {
+        Intent intent = new Intent(this, HomeActivity.class);
+        startActivity(intent);
+        finish();
+    }
 
     private void cleanedit(){
         edTitle.setText("");
@@ -351,6 +390,7 @@ public class AdvertActivity extends AppCompatActivity {
         DatabaseAdvert = fDatabase.getReference();
         mStorage = FirebaseStorage.getInstance();
         storageReference = mStorage.getReference();
+        databaseReference = fDatabase.getReference();
 
         //View objects
         edTitle = findViewById(R.id.ad_tittle);

@@ -13,11 +13,28 @@ public class Advert implements Serializable {
     String city;
     Integer price;
     String email;
-    String image;
     String userpic;
     String date;
-    Integer phone;
+    String username;
 
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    Integer phone;
+    String userid;
+
+    public String getUserid() {
+        return userid;
+    }
+
+    public void setUserid(String userid) {
+        this.userid = userid;
+    }
 
     public String getUserpic() {
         return userpic;
@@ -81,14 +98,6 @@ public class Advert implements Serializable {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getImage() {
-        return image;
-    }
-
-    public void setImage(String image) {
-        this.image = image;
     }
 
     public String getDate() {

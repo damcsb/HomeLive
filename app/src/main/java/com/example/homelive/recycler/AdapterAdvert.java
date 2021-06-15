@@ -20,6 +20,7 @@ import com.example.homelive.SettingsActivity;
 import com.example.homelive.model.Advert;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.material.button.MaterialButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
@@ -35,6 +36,7 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
     List<Advert> adverts;
     private OnAdvertClickInfo listener;
     private FirebaseStorage mStorage;
+    private FirebaseAuth fbAuth;
     private StorageReference storageReference;
 
     public AdapterAdvert(List<Advert> adverts, OnAdvertClickInfo listener) {
@@ -96,6 +98,7 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
 
            mStorage = FirebaseStorage.getInstance();
            storageReference = mStorage.getReference();
+           fbAuth = FirebaseAuth.getInstance();
 
             storageReference.child("Adverts").child(item.getUid()).child("0").getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                 @Override
@@ -110,6 +113,7 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
                    listener.onClick(item);
                }
            });
+
         }
 
     }

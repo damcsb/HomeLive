@@ -65,6 +65,10 @@ public class HomeActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.item_chat:
+                Intent conver = new Intent(HomeActivity.this, ConversActivity.class);
+                startActivity(conver);
+                finish();
+                break;
 
             case R.id.item_logout :
                AlertDisconect();
