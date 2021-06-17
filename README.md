@@ -52,6 +52,13 @@ Histórico de cambios:
 3º semana: Comienzo de firebase storage, CRUD de imagenes.
 4º semana: Búsqueda de recursos por internet para solucionar un error en la base de datos.
 5º semana: Creación y borrado del objeto principal de la aplicación, problemas con storage y comienzo del apartado social, también trabajando en la edición del objeto.
+6º semana: Chat completado, filtrado completado, terminando algunos problemas para tener la app lista
 
 Bibliografía: paginas para las soluciones de errores usadas StackOverflow, Material Design, Youtube y Medium.
+
+##Versión del 17/06/2021
+
+[Web](https://tdkclzul.lucusprueba.es)
+
+[Presentación](https://firebasestorage.googleapis.com/v0/b/homelive-4c14b.appspot.com/o/presentaci%C3%B3n.pdf?alt=media&token=fac17b56-7adf-4414-ada5-c58195a63d2c)
 
