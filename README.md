@@ -59,11 +59,19 @@ Bibliografía: paginas para las soluciones de errores usadas StackOverflow, Mate
 
 ## Versión del 17/06/2021
 
+Landing page</br>
+
 [Web](https://tdkclzul.lucusprueba.es)
+
+Presentación de la app.</br>
 
 [Presentación](https://firebasestorage.googleapis.com/v0/b/homelive-4c14b.appspot.com/o/presentaci%C3%B3n.pdf?alt=media&token=fac17b56-7adf-4414-ada5-c58195a63d2c)
 
+Videotutorial de la aplicación y explicativo. </br>
+
 [Video](https://youtu.be/jt1ER_RD_qM)
+
+APK versión final. </br>
 
 [APK](https://mega.nz/file/WgZxBCIL#ayOeG8bJFq0hUuibs14JgbfwQVfGjwT-47faPQOb0Uw)
 
