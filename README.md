@@ -45,7 +45,7 @@ Esta es la APK de la versión preliminar para el 14/05/2021
 [APK 14/05/2021](https://mega.nz/file/X5xWySQa#-uv6vfhGJwAWInbD2I07555fqhGUEaEKyCWWIAVr-wQ)
 
 
-#Histórico de cambios
+# Histórico de cambios
 
 Histórico de cambios: 
 1º semana:  Se realizaron las creaciones de cada uno de los layouts y la interfaz, también se creó la base de datos y la autenticación.</br>
