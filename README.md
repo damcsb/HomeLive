@@ -44,14 +44,26 @@ Esta es la APK de la versión preliminar para el 14/05/2021
 
 [APK 14/05/2021](https://mega.nz/file/X5xWySQa#-uv6vfhGJwAWInbD2I07555fqhGUEaEKyCWWIAVr-wQ)
 
+
 #Histórico de cambios
 
 Histórico de cambios: 
-1º semana:  Se realizaron las creaciones de cada uno de los layouts y la interfaz, también se creó la base de datos y la autenticación.
-2º semana: Se creó el el primer adapter y el modelo del objeto principal, también se guardó en la base de datos y se mostraba.
-3º semana: Comienzo de firebase storage, CRUD de imagenes.
-4º semana: Búsqueda de recursos por internet para solucionar un error en la base de datos.
-5º semana: Creación y borrado del objeto principal de la aplicación, problemas con storage y comienzo del apartado social, también trabajando en la edición del objeto.
+1º semana:  Se realizaron las creaciones de cada uno de los layouts y la interfaz, también se creó la base de datos y la autenticación.</br>
+2º semana: Se creó el el primer adapter y el modelo del objeto principal, también se guardó en la base de datos y se mostraba.</br>
+3º semana: Comienzo de firebase storage, CRUD de imagenes.</br>
+4º semana: Búsqueda de recursos por internet para solucionar un error en la base de datos.</br>
+5º semana: Creación y borrado del objeto principal de la aplicación, problemas con storage y comienzo del apartado social, también trabajando en la edición del objeto.</br>
+6º semana: Chat completado, filtrado completado, terminando algunos problemas para tener la app lista</br>
 
-Bibliografía: paginas para las soluciones de errores usadas StackOverflow, Material Design, Youtube y Medium.
+Bibliografía: paginas para las soluciones de errores usadas StackOverflow, Material Design, Youtube y Medium.</br>
+
+## Versión del 17/06/2021
+
+[Web](https://tdkclzul.lucusprueba.es)
+
+[Presentación](https://firebasestorage.googleapis.com/v0/b/homelive-4c14b.appspot.com/o/presentaci%C3%B3n.pdf?alt=media&token=fac17b56-7adf-4414-ada5-c58195a63d2c)
+
+[Video](https://youtu.be/jt1ER_RD_qM)
+
+[APK](https://mega.nz/file/WgZxBCIL#ayOeG8bJFq0hUuibs14JgbfwQVfGjwT-47faPQOb0Uw)
 
