@@ -44,8 +44,6 @@ public class LoginActivity extends AppCompatActivity {
         btn_register = findViewById(R.id.log_register);
         loginimg = findViewById(R.id.log_pic);
 
-        editusername.setText("leon@gmail.com");
-        editpassword.setText("leon12");
 
         btn_login.setOnClickListener(new View.OnClickListener() {
             @Override

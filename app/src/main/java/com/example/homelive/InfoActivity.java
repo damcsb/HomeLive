@@ -6,15 +6,23 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageButton;
+import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.ViewSwitcher;
 
+import com.denzcoskun.imageslider.ImageSlider;
+import com.denzcoskun.imageslider.constants.ScaleTypes;
+import com.denzcoskun.imageslider.models.SlideModel;
 import com.example.homelive.model.Advert;
 import com.example.homelive.model.Conversation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -29,9 +37,11 @@ import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -47,22 +57,28 @@ public class InfoActivity extends AppCompatActivity {
     private FirebaseAuth fbAuth;
     private DatabaseReference databaseReference;
 
-    private ArrayList<Uri> imagesUri;
     Advert advertinf;
     String user_img;
     String user_username;
     String passuuid;
-    private boolean c = true;
 
+    private ImageSlider slider;
+
+
+    private ImageView imageView;
+    List<SlideModel> remoteimages;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_info);
         ViewInits();
+        slider = findViewById(R.id.image_slider);
+        remoteimages = new ArrayList<>();
 
         advertinf = (Advert) getIntent().getSerializableExtra("adinf");
         getData();
+
 
         storageReference = FirebaseStorage.getInstance().getReference();
 
@@ -70,23 +86,42 @@ public class InfoActivity extends AppCompatActivity {
         advertdesc.setText(advertinf.getDescription());
         advertplace.setText(advertinf.getCity());
 
-
         Uri authorpic = Uri.parse(advertinf.getUserpic());
         Picasso.get().load(authorpic).into(profilepic);
 
+        Task<ListResult> listResultTask = storageReference.child("Adverts").child(advertinf.getUid()).listAll();
+        listResultTask.addOnCompleteListener(new OnCompleteListener<ListResult>() {
+            @Override
+            public void onComplete(@NonNull @NotNull Task<ListResult> task) {
+                List<StorageReference> items = task.getResult().getItems();
+                for(int i=0; i< items.size(); i++){
+                    items.get(i).getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            remoteimages.add(new SlideModel(uri.toString(), advertinf.getTittle(), ScaleTypes.FIT));
+                            slider.setImageList(remoteimages, ScaleTypes.FIT);
+                        }
+                    });
+                }
+            }
+        });
 
-        StorageReference imagesReference = storageReference.child(advertinf.getUid());
-        Task<ListResult> listResultTask = imagesReference.listAll();
+    /*
+        storageReference.child("Adverts").child(advertinf.getUid());
+        Task<ListResult> listResultTask = storageReference.listAll();
         listResultTask.addOnCompleteListener(new OnCompleteListener<ListResult>() {
             @Override
             public void onComplete(@NonNull @NotNull Task<ListResult> task) {
                 List<StorageReference> items = task.getResult().getItems();
                 for(int i = 0; i < items.size(); i++){
 
-                    //imagesUri.add(items.get(i));
+
+                    carouselView1.setPageColor(items.size());
+                    carouselView1.setImageListener(imageListener);
                 }
-            }
-        });
+                }
+        });*/
+
 
 
 
@@ -97,7 +132,10 @@ public class InfoActivity extends AppCompatActivity {
             }
         });
 
+
     }
+
+
 
     private void createconversation(){
 
@@ -128,7 +166,7 @@ public class InfoActivity extends AppCompatActivity {
             public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
                 if(snapshot.exists()){
                     Toast.makeText(getApplicationContext(), "You have a conversation with this user", Toast.LENGTH_LONG).show();
-                }else if(advertinf.getUserid() == uid){
+                }else if(advertinf.getUserid().equals(uid)){
                     Toast.makeText(InfoActivity.this, "You cant create a conversation with yourself", Toast.LENGTH_SHORT).show();
                     return;
                 }else{
@@ -144,7 +182,6 @@ public class InfoActivity extends AppCompatActivity {
 
 
     private void ViewInits(){
-        advertpic = findViewById(R.id.info_image);
         profilepic = findViewById(R.id.info_propic);
         advertauth = findViewById(R.id.info_username);
         advertdesc = findViewById(R.id.info_desc);
@@ -191,7 +228,5 @@ public class InfoActivity extends AppCompatActivity {
         }).show();
     }
 
-    private void checkconv(){
 
-    }
 }

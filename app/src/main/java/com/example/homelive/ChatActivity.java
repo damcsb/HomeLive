@@ -66,6 +66,7 @@ public class ChatActivity extends AppCompatActivity {
     private Advert advertc;
     private Uri messageuri;
     private String uuid;
+    private String user_name;
 
 
     @Override
@@ -78,6 +79,18 @@ public class ChatActivity extends AppCompatActivity {
 
         //advertc = (Advert) getIntent().getSerializableExtra("advertchat");
         uuid = getIntent().getStringExtra("convuuid");
+        databaseReference.child("Users").child(fbAuth.getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+                user_name = snapshot.child("username").getValue().toString();
+            }
+
+            @Override
+            public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+            }
+        });
+
 
 
         messagebox.setEndIconOnClickListener(new View.OnClickListener() {
@@ -135,7 +148,7 @@ public class ChatActivity extends AppCompatActivity {
         } else {
             message.setId(messuuid);
             message.setContent(text);
-            message.setAuthor(fbAuth.getUid());
+            message.setAuthor(user_name);
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date date = new Date();
             dateFormat.format(date);
@@ -189,7 +202,7 @@ public class ChatActivity extends AppCompatActivity {
                         String urlphoto = uri.toString();
                         m.setImage(urlphoto);
                         m.setId(uid);
-                        m.setAuthor(fbAuth.getUid());
+                        m.setAuthor(user_name);
                         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                         Date date = new Date();
                         dateFormat.format(date);
@@ -215,8 +228,9 @@ public class ChatActivity extends AppCompatActivity {
                     messages.add(m);
                 }
                 dateord();
+                scrolltoposition();
                 adapterMessage.notifyDataSetChanged();
-                recyclerView.scrollToPosition(adapterMessage.getItemCount() - 1);
+
             }
 
             @Override
@@ -224,6 +238,10 @@ public class ChatActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    private void scrolltoposition(){
+        recyclerView.scrollToPosition(adapterMessage.getItemCount() - 1);
     }
 
     private void cleanedit() {

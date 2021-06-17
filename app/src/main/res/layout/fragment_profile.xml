@@ -15,6 +15,18 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="Click image to change it"
+                app:layout_constraintBottom_toTopOf="@+id/pro_image"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/pro_image"
                 android:layout_width="200dp"
@@ -25,11 +37,12 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
+
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="10dp"
                 android:gravity="center"
                 android:text="Update Profile"
                 android:textSize="24sp"
@@ -40,12 +53,28 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="15dp"
+                android:hint="New Username"
+                android:padding="15dp"
+                android:textColorHint="@color/green2"
+                app:boxStrokeColor="@color/green2"
+                app:boxStrokeErrorColor="@color/green2"
+                app:boxStrokeWidth="2dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:counterOverflowTextColor="@color/green2"
+                app:counterTextColor="@color/green2"
+                app:errorTextColor="@color/green2"
+                app:helperTextTextColor="@color/green2"
+                app:hintTextColor="@color/green2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView">
+                app:layout_constraintTop_toBottomOf="@+id/textView"
+                app:placeholderTextColor="@color/green2"
+                app:prefixTextColor="@color/green2"
+                app:suffixTextColor="@color/green2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/pro_username"
@@ -55,28 +84,31 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/textInputLayout2"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:hint="New Password"
+                android:padding="15dp"
+                app:endIconMode="password_toggle"
+                android:textColorHint="@color/green2"
+                app:boxStrokeColor="@color/green2"
+                app:boxStrokeErrorColor="@color/green2"
+                app:boxStrokeWidth="2dp"
+                app:boxStrokeWidthFocused="2dp"
+                app:counterOverflowTextColor="@color/green2"
+                app:counterTextColor="@color/green2"
+                app:errorTextColor="@color/green2"
+                app:helperTextTextColor="@color/green2"
+                app:hintTextColor="@color/green2"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout"
+                app:placeholderTextColor="@color/green2"
+                app:prefixTextColor="@color/green2"
+                app:suffixTextColor="@color/green2">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/pro_pass"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-            </com.google.android.material.textfield.TextInputLayout>
-
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/textInputLayout3"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/pro_pass2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content" />
             </com.google.android.material.textfield.TextInputLayout>
@@ -88,31 +120,32 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textInputLayout3">
+                app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
 
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="20dp">
+                    android:layout_height="wrap_content">
 
                     <com.google.android.material.button.MaterialButton
-                        android:id="@+id/materialButton"
+                        android:id="@+id/pro_editname"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="center"
                         android:layout_marginBottom="100dp"
-                        android:text="CREATE"
-                        app:icon="@drawable/ic_create"
+                        android:text="Update username"
+                        app:icon="@drawable/ic_edit"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <com.google.android.material.button.MaterialButton
+                        android:id="@+id/pro_editpass"
                         android:layout_width="150dp"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="end"
-                        android:gravity="center"
-                        android:text="SETTINGS"
-                        app:icon="@drawable/ic_settings"
+                        android:layout_marginBottom="100dp"
+                        android:text="Update password"
+                        app:icon="@drawable/ic_edit"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>

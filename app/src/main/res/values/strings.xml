@@ -4,6 +4,7 @@
     <string name="title_profile">Profile</string>
 
     <string-array name="city">
+        <item>Todas</item>
         <item>Álava</item>
         <item>Albacete</item>
         <item>Alicante</item>

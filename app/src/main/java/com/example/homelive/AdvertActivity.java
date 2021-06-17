@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageSwitcher;
 import android.widget.ImageView;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 import android.widget.ViewSwitcher;
 
 import com.example.homelive.model.Advert;
+import com.example.homelive.ui.Profile.ProfileFragment;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
@@ -102,11 +104,12 @@ public class AdvertActivity extends AppCompatActivity {
         getDate();
         getusername();
 
+        if(advertex != null){
+            carousel.setVisibility(View.GONE);
+            car_right.setVisibility(View.GONE);
+            car_left.setVisibility(View.GONE);
+        }
 
-        edTitle.setText("Ejemplo");
-        edDesc.setText("ejemplo2");
-        edPhone.setText("65555");
-        edprice.setText("10000");
         btn_save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,10 +125,14 @@ public class AdvertActivity extends AppCompatActivity {
                 if(title.isEmpty() || desc.isEmpty() || price.isEmpty() || Phone.isEmpty()){
                     Snackbar.make(view, "Complete the fields", Snackbar.LENGTH_LONG).show();
                     return;
-                }else if(imagesUri.isEmpty()){
+                }else if(ct_selected.contains("Todas")){
+                    Snackbar.make(view, "Put a correct city", Snackbar.LENGTH_LONG).show();
+                    return;
+                }else if(imagesUri.isEmpty() && advertex == null){
                     Snackbar.make(view, "Put some photos", Snackbar.LENGTH_LONG).show();
                     return;
                 }
+
 
 
                 //create object
@@ -175,6 +182,7 @@ public class AdvertActivity extends AppCompatActivity {
                     DatabaseUser.child("Users").child(fbAuth.getUid()).child("Adverts").child(adup.getUid()).setValue(adup);
                 }
                 advertex = null;
+                goHome();
             }
         });
 
@@ -365,12 +373,6 @@ public class AdvertActivity extends AppCompatActivity {
         finish();
     }
 
-    private void cleanedit(){
-        edTitle.setText("");
-        edDesc.setText("");
-        edprice.setText("");
-        edPhone.setText("");
-    }
 
     private void pickImageInt(){
         Intent intent = new Intent();
@@ -403,5 +405,9 @@ public class AdvertActivity extends AppCompatActivity {
         carousel = findViewById(R.id.ad_images);
         car_left = findViewById(R.id.caro_left);
         car_right = findViewById(R.id.caro_right);
+    }
+    private void goHome(){
+        Intent intent = new Intent(AdvertActivity.this, HomeActivity.class);
+        startActivity(intent);
     }
 }

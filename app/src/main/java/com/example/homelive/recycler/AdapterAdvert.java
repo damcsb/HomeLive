@@ -25,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import de.hdodenhof.circleimageview.CircleImageView;
@@ -50,6 +51,11 @@ public class AdapterAdvert extends RecyclerView.Adapter<AdapterAdvert.AdapterVie
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_rv, parent, false);
         AdapterViewHolder holder = new AdapterViewHolder(v);
         return holder;
+    }
+
+    public void filtrar(ArrayList<Advert> filteradvert){
+        this.adverts = filteradvert;
+        notifyDataSetChanged();
     }
 
     @Override

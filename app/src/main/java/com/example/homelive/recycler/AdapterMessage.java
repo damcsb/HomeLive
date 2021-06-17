@@ -24,7 +24,6 @@ import java.util.List;
 public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.AdapterViewHolder> {
 
     List<Message> messages;
-    private FirebaseAuth fbAuth;
 
     public AdapterMessage(List<Message> messages) {
         this.messages = messages;
@@ -51,7 +50,7 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.AdapterV
 
     public class AdapterViewHolder extends RecyclerView.ViewHolder {
 
-        TextView msgtext;
+        TextView msgtext, msgusername;
         CardView msgbackground;
         ImageView msgimg;
 
@@ -59,30 +58,22 @@ public class AdapterMessage extends RecyclerView.Adapter<AdapterMessage.AdapterV
             super(itemView);
 
             msgtext = itemView.findViewById(R.id.msg_textview);
+            msgusername = itemView.findViewById(R.id.msg_user);
             msgimg = itemView.findViewById(R.id.msg_image);
             msgbackground = itemView.findViewById(R.id.msgback);
         }
 
         public void bind(Message item) {
 
-            fbAuth = FirebaseAuth.getInstance();
-            String uid = fbAuth.getUid();
-            String author = item.getAuthor();
-
             msgtext.setText(item.getContent());
+            msgusername.setText(item.getAuthor());
+
+
             if (item.getImage() != null) {
                 msgimg.setVisibility(View.VISIBLE);
                 Picasso.get().load(item.getImage()).into(msgimg);
             } else {
                 msgimg.setVisibility(View.GONE);
-            }
-
-            if(!author.equals(uid)){
-                msgbackground.setCardBackgroundColor(Color.rgb(0, 255, 0));
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-                lp.setMargins(4, 7, 75, 7);
-                msgbackground.setLayoutParams(lp);
-
             }
 
 

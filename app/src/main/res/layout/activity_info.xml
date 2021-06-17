@@ -13,12 +13,16 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="MissingClass">
 
-        <ImageView
-            android:id="@+id/info_image"
+        <com.denzcoskun.imageslider.ImageSlider
+            android:id="@+id/image_slider"
             android:layout_width="match_parent"
-            android:layout_height="200dp" />
+            android:layout_height="300dp"
+            app:iss_auto_cycle="true"
+            app:iss_period="5000"
+            app:iss_delay="0"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -46,6 +50,8 @@
                         android:id="@+id/info_username"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
                         android:text="Username"
                         android:textSize="20sp" />
 
@@ -53,6 +59,9 @@
                         android:id="@+id/info_place"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="5dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginTop="10dp"
                         android:text="Place"
                         android:textSize="16sp" />
                 </LinearLayout>
@@ -76,4 +85,5 @@
         android:layout_margin="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

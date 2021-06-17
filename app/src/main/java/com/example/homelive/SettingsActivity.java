@@ -43,6 +43,7 @@ public class SettingsActivity extends AppCompatActivity {
     private DatabaseReference DatabaseAdvert;
     private FirebaseStorage mStorage;
     private StorageReference storageReference;
+    private DatabaseReference databaseReference;
     private AdapterSettings adapter;
     private RecyclerView recycler;
     private List<Advert> adverts;
@@ -60,6 +61,7 @@ public class SettingsActivity extends AppCompatActivity {
         DatabaseAdvert = fDatabase.getReference("Adverts");
         mStorage = FirebaseStorage.getInstance();
         storageReference = mStorage.getReference("Adverts");
+        databaseReference = FirebaseDatabase.getInstance().getReference();
 
         recycler = findViewById(R.id.rv_settings);
         recycler.setLayoutManager(new LinearLayoutManager(this));
@@ -100,7 +102,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     }
     private void showdata(){
-        DatabaseAdvert.addValueEventListener(new ValueEventListener() {
+        databaseReference.child("Users").child(fbAuth.getUid()).child("Adverts").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 adverts.clear();

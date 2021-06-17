@@ -46,13 +46,11 @@ public class AdapterSettings extends RecyclerView.Adapter<AdapterSettings.Adapte
 
     public class AdapterViewHolder extends RecyclerView.ViewHolder {
 
-        CircleImageView adpicture;
         TextView adtitle, addate, adprice;
         Button btn_del, btn_edit;
 
         public AdapterViewHolder(@NonNull View itemView) {
             super(itemView);
-            adpicture = itemView.findViewById(R.id.rvs_image);
             adtitle = itemView.findViewById(R.id.rvs_title);
             addate = itemView.findViewById(R.id.rvs_date);
             adprice = itemView.findViewById(R.id.rvs_price);
