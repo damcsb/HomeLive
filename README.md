@@ -75,3 +75,23 @@ APK versión final. </br>
 
 [APK](https://mega.nz/file/WgZxBCIL#ayOeG8bJFq0hUuibs14JgbfwQVfGjwT-47faPQOb0Uw)
 
+# Fotos de las páginas de la app
+
+![picture](https://i.imgur.com/NaROAkm.png)</br>
+
+![picture](https://i.imgur.com/CRFN9x8.png)</br>
+
+![picture](https://i.imgur.com/T9kW6bT.png)</br>
+
+![picture](https://i.imgur.com/ymqWFUv.png)</br>
+
+![picture](https://i.imgur.com/ENH3tFe.png)</br>
+
+![picture](https://i.imgur.com/M0N5jsz.png)</br>
+
+![picture](https://i.imgur.com/V81E4Pt.png)</br>
+
+![picture](https://i.imgur.com/ksWUc57.png)</br>
+
+![picture](https://i.imgur.com/xbDsFaL.png)</br>
+
